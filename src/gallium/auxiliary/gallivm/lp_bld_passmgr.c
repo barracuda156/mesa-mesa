@@ -43,6 +43,10 @@
 #include <llvm-c/Transforms/IPO.h>
 #endif
 #include <llvm-c/Transforms/Coroutines.h>
+#else
+#include <llvm-c/Transforms/InstCombine.h>
+#include <llvm-c/Transforms/Scalar.h>
+#include <llvm-c/Transforms/Utils.h>
 #endif
 
 #if USE_NEW_PASS == 0

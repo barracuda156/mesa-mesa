@@ -75,7 +75,11 @@ lp_llvm_descriptor_base(struct gallivm_state *gallivm,
 
    LLVMValueRef binding_offset = LLVMBuildMul(builder, binding_index, lp_build_const_int32(gallivm, sizeof(struct lp_descriptor)), "");
    LLVMTypeRef int64_type = LLVMInt64TypeInContext(gallivm->context);
+#if LLVM_VERSION_MAJOR >= 9
    binding_offset = LLVMBuildIntCast2(builder, binding_offset, int64_type, false, "");
+#else
+   binding_offset = LLVMBuildIntCast(builder, binding_offset, int64_type, "");
+#endif
 
    LLVMValueRef desc_ptr = LLVMBuildPtrToInt(builder, desc_set_base, int64_type, "");
    return LLVMBuildAdd(builder, desc_ptr, binding_offset, "");

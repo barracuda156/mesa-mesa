@@ -3328,8 +3328,12 @@ generate_fragment(struct llvmpipe_context *lp,
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    /* code generated texture sampling */

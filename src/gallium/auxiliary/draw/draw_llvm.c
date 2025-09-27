@@ -1684,8 +1684,12 @@ draw_llvm_generate(struct draw_llvm *llvm, struct draw_llvm_variant *variant)
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    memset(&vs_type, 0, sizeof vs_type);
@@ -2419,8 +2423,12 @@ draw_gs_llvm_generate(struct draw_llvm *llvm,
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    lp_build_context_init(&bld, gallivm, lp_type_int(32));
@@ -2999,8 +3007,12 @@ draw_tcs_llvm_generate(struct draw_llvm *llvm,
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    lp_build_context_init(&bld, gallivm, lp_type_int(32));
@@ -3076,8 +3088,12 @@ draw_tcs_llvm_generate(struct draw_llvm *llvm,
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    resources_ptr = LLVMGetParam(variant_coro, 0);
@@ -3590,8 +3606,12 @@ draw_tes_llvm_generate(struct draw_llvm *llvm,
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    lp_build_context_init(&bld, gallivm, lp_type_int(32));

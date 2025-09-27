@@ -4544,11 +4544,13 @@ lp_build_do_atomic_soa(struct gallivm_state *gallivm,
       case LLVMAtomicRMWBinOpUMin:
          valid &= integer;
          break;
+#if LLVM_VERSION_MAJOR >= 9
       case LLVMAtomicRMWBinOpFAdd:
       case LLVMAtomicRMWBinOpFSub:
 #if LLVM_VERSION_MAJOR >= 15
          case LLVMAtomicRMWBinOpFMax:
          case LLVMAtomicRMWBinOpFMin:
+#endif
 #endif
          valid &= !integer;
          break;

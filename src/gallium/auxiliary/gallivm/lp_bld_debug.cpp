@@ -292,31 +292,63 @@ lp_bld_debug_info_type(gallivm_state *gallivm, LLVMTypeRef type)
 
    if (kind == LLVMHalfTypeKind)
       return LLVMDIBuilderCreateBasicType(
-         gallivm->di_builder, "float16_t", strlen("float16_t"), 16, llvm::dwarf::DW_ATE_float, LLVMDIFlagZero);
+         gallivm->di_builder, "float16_t", strlen("float16_t"), 16, llvm::dwarf::DW_ATE_float
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
    if (kind == LLVMFloatTypeKind)
       return LLVMDIBuilderCreateBasicType(
-         gallivm->di_builder, "float", strlen("float"), 32, llvm::dwarf::DW_ATE_float, LLVMDIFlagZero);
+         gallivm->di_builder, "float", strlen("float"), 32, llvm::dwarf::DW_ATE_float
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
    if (kind == LLVMDoubleTypeKind)
       return LLVMDIBuilderCreateBasicType(
-         gallivm->di_builder, "double", strlen("double"), 64, llvm::dwarf::DW_ATE_float, LLVMDIFlagZero);
+         gallivm->di_builder, "double", strlen("double"), 64, llvm::dwarf::DW_ATE_float
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
 
    if (kind == LLVMIntegerTypeKind) {
       uint32_t bit_size = LLVMGetIntTypeWidth(type);
       if (bit_size == 1)
          return LLVMDIBuilderCreateBasicType(
-            gallivm->di_builder, "bool", strlen("bool"), 1, llvm::dwarf::DW_ATE_unsigned, LLVMDIFlagZero);
+            gallivm->di_builder, "bool", strlen("bool"), 1, llvm::dwarf::DW_ATE_unsigned
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
       if (bit_size == 8)
          return LLVMDIBuilderCreateBasicType(
-            gallivm->di_builder, "int8_t", strlen("int8_t"), 8, llvm::dwarf::DW_ATE_unsigned, LLVMDIFlagZero);
+            gallivm->di_builder, "int8_t", strlen("int8_t"), 8, llvm::dwarf::DW_ATE_unsigned
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
       if (bit_size == 16)
          return LLVMDIBuilderCreateBasicType(
-            gallivm->di_builder, "int16_t", strlen("int16_t"), 16, llvm::dwarf::DW_ATE_unsigned, LLVMDIFlagZero);
+            gallivm->di_builder, "int16_t", strlen("int16_t"), 16, llvm::dwarf::DW_ATE_unsigned
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
       if (bit_size == 32)
          return LLVMDIBuilderCreateBasicType(
-            gallivm->di_builder, "int32_t", strlen("int32_t"), 32, llvm::dwarf::DW_ATE_unsigned, LLVMDIFlagZero);
+            gallivm->di_builder, "int32_t", strlen("int32_t"), 32, llvm::dwarf::DW_ATE_unsigned
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
       if (bit_size == 64)
          return LLVMDIBuilderCreateBasicType(
-            gallivm->di_builder, "int64_t", strlen("int64_t"), 64, llvm::dwarf::DW_ATE_unsigned, LLVMDIFlagZero);
+            gallivm->di_builder, "int64_t", strlen("int64_t"), 64, llvm::dwarf::DW_ATE_unsigned
+#if LLVM_VERSION_MAJOR >= 8
+            , LLVMDIFlagZero
+#endif
+            );
    }
 
    if (kind == LLVMFunctionTypeKind) {
@@ -385,7 +417,11 @@ lp_function_add_debug_info(gallivm_state *gallivm, LLVMValueRef func, LLVMTypeRe
    
       LLVMDIBuilderCreateCompileUnit(
          gallivm->di_builder, LLVMDWARFSourceLanguageC11, gallivm->file, gallivm->file_name, strlen(gallivm->file_name),
-         0, NULL, 0, 0, NULL, 0, LLVMDWARFEmissionFull, 0, 0, 0, "/", 1, "", 0);
+         0, NULL, 0, 0, NULL, 0, LLVMDWARFEmissionFull, 0, 0, 0
+#if LLVM_VERSION_MAJOR >= 8
+            , "/", 1, "", 0
+#endif
+         );
    }
 
    LLVMMetadataRef di_function_type = lp_bld_debug_info_type(gallivm, func_type);

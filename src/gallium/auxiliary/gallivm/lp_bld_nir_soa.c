@@ -4375,10 +4375,12 @@ lp_translate_atomic_op(nir_atomic_op op)
    case nir_atomic_op_umax: return LLVMAtomicRMWBinOpUMax;
    case nir_atomic_op_imin: return LLVMAtomicRMWBinOpMin;
    case nir_atomic_op_imax: return LLVMAtomicRMWBinOpMax;
+#if LLVM_VERSION_MAJOR >= 9
    case nir_atomic_op_fadd: return LLVMAtomicRMWBinOpFAdd;
 #if LLVM_VERSION_MAJOR >= 15
    case nir_atomic_op_fmin: return LLVMAtomicRMWBinOpFMin;
    case nir_atomic_op_fmax: return LLVMAtomicRMWBinOpFMax;
+#endif
 #endif
    default:          UNREACHABLE("Unexpected atomic");
    }
@@ -5700,7 +5702,11 @@ visit_block(struct lp_build_nir_soa_context *bld, nir_block *block)
          nir_instr_debug_info *debug_info = nir_instr_get_debug_info(instr);
          LLVMMetadataRef di_loc = LLVMDIBuilderCreateDebugLocation(
             gallivm->context, debug_info->nir_line, 1, gallivm->di_function, NULL);
+#if LLVM_VERSION_MAJOR >= 9
          LLVMSetCurrentDebugLocation2(gallivm->builder, di_loc);
+#else
+         LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
 
          LLVMBuildStore(gallivm->builder, mask_vec(bld), bld->debug_exec_mask);
       }

@@ -581,8 +581,12 @@ generate_compute(struct llvmpipe_context *lp,
       LLVMPositionBuilderAtEnd(builder, block);
 
       if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
          LLVMSetCurrentDebugLocation2(
            gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+         LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
       }
 
       if (is_mesh) {
@@ -718,8 +722,12 @@ generate_compute(struct llvmpipe_context *lp,
    LLVMPositionBuilderAtEnd(builder, block);
 
    if (gallivm->di_function) {
+#if LLVM_VERSION_MAJOR >= 9
       LLVMSetCurrentDebugLocation2(
          gallivm->builder, LLVMDIBuilderCreateDebugLocation(gallivm->context, 0, 0, gallivm->di_function, NULL));
+#else
+      LLVMSetCurrentDebugLocation(gallivm->builder, NULL);
+#endif
    }
 
    struct lp_build_loop_state loop_state;
